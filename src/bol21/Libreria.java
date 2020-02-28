@@ -53,7 +53,48 @@ public class Libreria {
                 i = 1;
             }
         }
-        if (i == 1) System.out.println("Os libros sen stock foron eliminados");
+        if (i == 1) {
+            ficheiro.delete();
+            for (int j = 0; j < libreria.size(); j++) {
+                Libro libro = new Libro(
+                        libreria.get(j).getNome(),
+                        libreria.get(j).getAutor(),
+                        libreria.get(j).getPrezo(),
+                        libreria.get(j).getUnidades()
+                );
+                editFicheiro.escritura(nomeFicheiro, libro);
+            }
+            System.out.println("Os libros sen stock foron eliminados");
+        }
         else System.out.println("Non hai libros sen stock");
+    }
+
+    public void modPrezo(String nomeFicheiro) {
+        File ficheiro = new File(nomeFicheiro);
+        String nome = PedirDatos.pedirString("Introduce o nome: ");
+        int posicion = 0;
+        EditFicheiro editFicheiro = new EditFicheiro();
+        ArrayList<Libro> libreria = editFicheiro.lectura(ficheiro);
+        int i = 0;
+        for (int j = 0; j < libreria.size(); j++) {
+            if (nome.equals(libreria.get(j).getNome())) {
+                posicion = j;
+                i = 1;
+            }
+        }
+        if (i == 1) {
+            libreria.get(posicion).setPrezo(PedirDatos.pedirDouble("Introduce o novo prezo: "));
+            ficheiro.delete();
+            for (int j = 0; j < libreria.size(); j++) {
+                Libro libro = new Libro(
+                        libreria.get(j).getNome(),
+                        libreria.get(j).getAutor(),
+                        libreria.get(j).getPrezo(),
+                        libreria.get(j).getUnidades()
+                );
+                editFicheiro.escritura(nomeFicheiro, libro);
+            }
+        }
+        else System.out.println("O libro non se atopa na librería");
     }
 }
